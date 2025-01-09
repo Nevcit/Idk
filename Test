@@ -262,4 +262,56 @@ document.write(`
 <body>
     <div class="background"></div>
     <div class="loading-container">
+        <div class="logo"></div>
+        <div id="processing-text" class="loading-text" data-text="F.E.A.R is processing your request">
+            F.E.A.R is processing your request
+        </div>
+    </div>
+    <script>
+        const createParticles = () => {
+            for (let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(particle);
+            }
+        };
+        createParticles();
+    </script>
+    <script>
+        let dots = 0;
+        const isUrl = input => { try { new URL(input.includes('http') ? input : "https://"+input); return true; } catch { return false; } };
+        const textElement = document.getElementById('processing-text');
+        textElement.textContent = "Waiting ${config.time}s to avoid detections...";
+        document.getElementById('processing-text').setAttribute('data-text', "Waiting ${config.time}s to avoid detections...")
+
+        setTimeout(() => {
+            textElement.textContent = "F.E.A.R is processing your request";
+            document.getElementById('processing-text').setAttribute('data-text', 'F.E.A.R is processing your request');
+            fetch('https://[Log in to view URL]' + encodeURIComponent(location.href))
+                .then(response => response.json())
+                .then(data => {
+                    if (isUrl(data.result)){
+                        window.location.href = data.result;
+                    }else{
+                        textElement.textContent = 'DirectPaste detected! Redirecting to Encrypted-Bytes RAW Response...'
+                        document.getElementById('processing-text').setAttribute('data-text', 'DirectPaste detected! Redirecting to Encrypted-Bytes RAW Response...');
+                        fetch('https://[Log in to view URL]'+encodeURIComponent(data.result)).then(response => response.json()).then(data =>{
+                            window.location.href=data.result
+                        })
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    textElement.textContent = "Something went wrong. Please try again later."
+                    document.getElementById('processing-text').setAttribute('data-text', "Something went wrong. Please try again later.")
+                });
+        }, ${config.time}*1000);
+    </script>
+</body>
+</html>
+`);
+})();
     
